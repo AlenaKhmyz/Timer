@@ -1,4 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
+import './style.css'
 
 function Timer(){
 //useRef нужен, т.к. имеем дело с js setInterval, отслеживать и останавливать при необходимости. 
@@ -62,7 +63,6 @@ function Timer(){
       if(intervalRef.current) clearInterval(intervalRef.current)
     }
   }, [])
-//другой способ вызвать ClearTimer () для начала обратного отсчета - через событие действия от кнопки
   function onClickResetBtn() {
 //поскольку мы не уверены, что интервал запущен, нам нужно сначала очистить его, используя
     if(intervalRef.current) clearInterval(intervalRef.current)
@@ -71,8 +71,8 @@ function Timer(){
 
 
   return (
-    <div className="timer">
-      <h2>{timer}</h2>
+    <div className="container">
+      <h2 className="timer">{timer}</h2>
       <button className="reset"onClick={onClickResetBtn}>Reset</button>
     </div>
   )
