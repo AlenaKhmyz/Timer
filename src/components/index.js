@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react'
 
-const Timer = () => {
+function Timer(){
 //useRef нужен, т.к. имеем дело с js setInterval, отслеживать и останавливать при необходимости. 
 // возвращает изменяемый рефобъект, возврощенный объект будет сохраняться на протяжении всего времени в жихни компонента.
 // может содержать изменяемое значение в своём свойстве .current.
@@ -9,16 +9,18 @@ const Timer = () => {
 
 //Метод Date.parse() разбирает строковое представление даты и возвращает количество миллисекунд, 
 // прошедших с 1 января 1970 года 00:00:00 по UTC.
-  const getTimeRemaining = (endTime) => {
+  function getTimeRemaining(endTime){
     let total = Date.parse(endTime) - Date.parse(new Date());
     let seconds = Math.floor((total / 1000) % 60);
     let minutes= Math.floor((total / 1000/60) % 60);
     let hours = Math.floor((total / 1000 * 60 * 60) % 24);
     let days = Math.floor(total / (1000 * 60 * 60 * 24) );
-    
+    return {
+      total, seconds, minutes, hours, days
+    }
   }
 // обновляем таймер и останавливаем, когда достигает 0
-  const startTimer = (deadline) => {
+  function startTimer(deadline) {
     let { total, seconds, minutes, hours, days } = getTimeRemaining(deadline) 
     if(total >= 0) {
 //обновление таймера
@@ -34,7 +36,7 @@ const Timer = () => {
   }
 //сбросить таймер с самого начала, стоит 10 секунд, но можно поменять, тогда формулу endtime придется также менять next
 
-  const clearTimer = (endTime) => {
+  function clearTimer(endTime) {
 //если попытаться удалить эту строку, обновление переменной таймера будет через 1000 мс или 1 секунду
     setTimer('00:00:10') 
     if(intervalRef.current) clearInterval(intervalRef.current)
@@ -45,10 +47,11 @@ const Timer = () => {
     intervalRef.current = id
   }
 
-  const getDeadlineTime = () => {
+  function getDeadlineTime() {
   //в этой функции можно изменить время интервала
     let deadline = new Date()
     deadline.setSeconds(deadline.getSeconds() + 10)
+    return deadline
   }
 
   useEffect(() => {
@@ -60,7 +63,7 @@ const Timer = () => {
     }
   }, [])
 //другой способ вызвать ClearTimer () для начала обратного отсчета - через событие действия от кнопки
-  const onClickResetBtn = () => {
+  function onClickResetBtn() {
 //поскольку мы не уверены, что интервал запущен, нам нужно сначала очистить его, используя
     if(intervalRef.current) clearInterval(intervalRef.current)
     clearTimer(getDeadlineTime())
